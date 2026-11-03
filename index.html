@@ -10,9 +10,10 @@
   <script defer src="assets/xlsx.full.min.js"></script>
   <script defer src="roster.js"></script>
   <script defer src="schedule-store.js"></script>
+  <script defer src="schedule-cycle.js?v=20261103"></script>
   <script defer src="assets/lunar.js"></script>
   <script defer src="calendar-info.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="app.js?v=20261103-cycle"></script>
 </head>
 <body>
   <svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -56,6 +57,7 @@
     <section id="schedule" class="schedule-section wrap">
       <div class="section-heading"><div><p class="eyebrow">A LITTLE ORDER, A LOT OF LIFE</p><h2>工作有安排，生活有期待<span>。</span></h2><p class="section-description" id="schedule-description">自己选时间，也可以从 Excel 导入。</p></div><div class="section-actions"><button class="text-button" id="demo-button">体验示例</button><button class="button secondary" id="open-import"><svg><use href="#i-upload"/></svg> 导入排班</button><button class="button primary" id="open-manual"><svg><use href="#i-calendar"/></svg> 自己排班</button></div></div>
       <div id="demo-banner" class="demo-banner" hidden><span>正在查看示例排班，内容仅用于体验。</span><button id="exit-demo">返回我的排班 ×</button></div>
+      <div id="cycle-banner" class="demo-banner"><span>上二休一 · 以 2026 年 11 月 3 日休息为起点，早班、晚班、休息一直循环。临时调班可以点日期单独修改。</span></div>
       <div class="schedule-toolbar"><div class="person-label"><span class="avatar-mini"><img src="assets/friend-ip-q-v2.png" alt="" loading="lazy"></span><div><strong id="person-name">我的排班</strong><small id="last-import">从一份 Excel 开始，收好每一天的安排</small></div></div><label class="profile-picker" id="profile-picker-label" hidden>切换人员 <select id="profile-select" aria-label="切换排班人员"></select></label></div>
       <div class="summary-grid">
         <article class="shift-summary today-summary"><div class="summary-label"><svg><use href="#i-sun"/></svg><span>今天的安排</span><time id="today-date"></time></div><div id="today-summary"></div><span class="card-decoration">✺</span></article>
@@ -94,6 +96,7 @@
   <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>
+
 
 
 
