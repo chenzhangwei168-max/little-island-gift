@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f5ef">
+  <meta name="description" content="一个只属于你的日常小岛。收好每一天的排班，留住每一份小小的开心。">
+  <title>给你的小岛 · 日子慢慢，喜欢满满</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="assets/xlsx.full.min.js"></script>
+  <script defer src="roster.js"></script>
+  <script defer src="schedule-store.js"></script>
+  <script defer src="assets/lunar.js"></script>
+  <script defer src="calendar-info.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-flower" viewBox="0 0 24 24"><path d="M12 8C7 0 2 7 8 11c-9 1-5 10 1 5-2 9 8 9 6 0 7 5 11-4 2-5 6-4 1-11-5-3Z"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2m-8 3h2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20 5c-3-3-7-1-8 1C11 4 7 2 4 5c-5 5 3 11 8 15 5-4 13-10 8-15Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15A9 9 0 0 1 9 4a9 9 0 1 0 11 11Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M13 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8M9 15l1-5L19 1l4 4-9 9-5 1Z"/></symbol>
+  </defs></svg>
+  <header class="site-header wrap">
+    <a class="brand" href="#home" aria-label="给你的小岛 首页"><span class="brand-symbol"><svg><use href="#i-flower"/></svg></span><span>给你的小岛<small>YOUR LITTLE ISLAND</small></span></a>
+    <nav aria-label="主导航"><a href="#home" class="active">小岛日常</a><a href="#schedule">我的排班</a><a href="#notes">小小心事</a></nav>
+    <button class="date-pill" id="date-pill" aria-label="修改小岛昵称"><span class="live-dot"></span><span id="header-date"></span></button>
+  </header>
+  <main>
+    <section id="home" class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> A LITTLE SPACE, JUST FOR YOU</p>
+        <p class="greeting" id="greeting">嗨，欢迎回到你的小岛。</p>
+        <h1>日子慢慢，<br>喜欢<span class="heading-flower">满满<svg><use href="#i-flower"/></svg></span>。</h1>
+        <p class="hero-description">认真生活的你，也值得被好好照顾。<br>把工作的安排留在这里，把生活的可爱留给自己。</p>
+        <div class="hero-actions"><a class="button primary" href="#schedule">看看我的排班 <svg><use href="#i-arrow"/></svg></a><button class="text-button" id="say-hi">和小可爱打个招呼 <span>↗</span></button></div>
+        <div class="hero-caption"><span class="tiny-heart">♡</span><span>不必赶路，先在这里歇一会儿。</span><span class="caption-line"></span></div>
+      </div>
+      <div class="character-scene">
+        <div class="scene-orbit orbit-one"></div><div class="scene-orbit orbit-two"></div><div class="scene-glow"></div>
+        <div class="scene-spark spark-one">✧</div><div class="scene-spark spark-two">✦</div>
+        <div class="floating-note note-top"><span>♡</span> 今日宜 · 开心</div>
+        <button class="character" id="character" aria-label="点击和你的小岛伙伴打招呼"><img src="assets/friend-ip-q-v2.png" alt="根据朋友照片制作的Q版卡通人物：齐刘海、长发、圆框眼镜、米色发箍和格纹围巾" width="1280" height="1280" fetchpriority="high"></button>
+        <div class="floating-note note-bottom"><svg><use href="#i-sun"/></svg><div>生活的小美好<small>正在向你靠近</small></div></div>
+        <div class="character-caption"><span class="caption-dot"></span> 你的小岛伙伴 <span>·</span> 戳戳我</div>
+        <div id="character-bubble" class="character-bubble" role="status" hidden></div>
+      </div>
+      <span class="hero-number">01 / EVERYDAY, A LITTLE LOVELY</span>
+    </section>
+    <div class="section-divider wrap"><span></span><svg><use href="#i-flower"/></svg><span></span></div>
+    <section id="schedule" class="schedule-section wrap">
+      <div class="section-heading"><div><p class="eyebrow">A LITTLE ORDER, A LOT OF LIFE</p><h2>工作有安排，生活有期待<span>。</span></h2><p class="section-description" id="schedule-description">自己选时间，也可以从 Excel 导入。</p></div><div class="section-actions"><button class="text-button" id="demo-button">体验示例</button><button class="button secondary" id="open-import"><svg><use href="#i-upload"/></svg> 导入排班</button><button class="button primary" id="open-manual"><svg><use href="#i-calendar"/></svg> 自己排班</button></div></div>
+      <div id="demo-banner" class="demo-banner" hidden><span>正在查看示例排班，内容仅用于体验。</span><button id="exit-demo">返回我的排班 ×</button></div>
+      <div class="schedule-toolbar"><div class="person-label"><span class="avatar-mini"><img src="assets/friend-ip-q-v2.png" alt="" loading="lazy"></span><div><strong id="person-name">我的排班</strong><small id="last-import">从一份 Excel 开始，收好每一天的安排</small></div></div><label class="profile-picker" id="profile-picker-label" hidden>切换人员 <select id="profile-select" aria-label="切换排班人员"></select></label></div>
+      <div class="summary-grid">
+        <article class="shift-summary today-summary"><div class="summary-label"><svg><use href="#i-sun"/></svg><span>今天的安排</span><time id="today-date"></time></div><div id="today-summary"></div><span class="card-decoration">✺</span></article>
+        <article class="shift-summary tomorrow-summary"><div class="summary-label"><svg><use href="#i-moon"/></svg><span>明天的计划</span><time id="tomorrow-date"></time></div><div id="tomorrow-summary"></div><span class="card-decoration">☾</span></article>
+        <article class="rest-summary"><span class="rest-icon"><svg><use href="#i-flower"/></svg></span><p>给休息日留一点期待</p><div id="rest-countdown"></div></article>
+      </div>
+      <div class="calendar-layout">
+        <article class="calendar-panel"><div class="calendar-heading"><div class="month-title"><h3 id="calendar-title"></h3><span id="calendar-subtitle"></span></div><div class="calendar-controls"><button id="prev-month" class="icon-button" aria-label="上个月">‹</button><button id="calendar-today" class="today-button">今天</button><button id="next-month" class="icon-button" aria-label="下个月">›</button></div></div><div class="calendar-weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div><div class="calendar-grid" id="calendar-grid" role="group" aria-label="排班日期"></div><div class="calendar-footer"><div class="legend"><span><i class="legend-work"></i>值班</span><span><i class="legend-rest"></i>休息</span><span><i class="legend-change"></i>有变更</span></div><span>点日期选择上班 / OFF</span></div></article>
+        <aside class="day-panel"><p class="eyebrow">YOUR DAY, AT A GLANCE</p><h3 id="selected-date-title"></h3><p class="selected-weekday" id="selected-weekday"></p><div id="selected-shifts"></div><div class="day-tip"><svg><use href="#i-heart"/></svg><span>忙碌也好，休息也好，<br>记得给自己一点温柔。</span></div></aside>
+      </div>
+      <details id="changes-panel" class="changes-panel" hidden><summary><span><span class="change-dot"></span>这次排班有什么变化？</span><span id="change-count"></span></summary><div id="changes-list"></div></details>
+      <div class="schedule-bottom"><button class="text-button" id="open-history">查看导入记录 ↗</button><p class="local-note"><span>⌁</span> 节日与节气仅作日历标记；手动排班和导入原记录都会保存在当前浏览器。</p></div>
+    </section>
+    <section id="notes" class="notes-section wrap"><div class="notes-intro"><p class="eyebrow">LITTLE THINGS MATTER</p><h2>小小心事，<br>也值得被收好。</h2><p>今天有什么想记下来的？<br>一句话、一个愿望，或一件小小的开心。</p><svg class="notes-flower"><use href="#i-flower"/></svg></div><div class="notebook"><div class="notebook-top"><span>给自己的小纸条</span><span class="notebook-date" id="note-date"></span></div><label class="sr-only" for="note-text">写给自己的小纸条</label><textarea id="note-text" maxlength="2000" placeholder="慢慢来，今天也已经很棒了。&#10;写点什么吧……"></textarea><div class="notebook-bottom"><span id="note-state" role="status">只留在这个浏览器里</span><button class="button primary small-button" id="save-note">收好这份心情 <svg><use href="#i-heart"/></svg></button></div></div></section>
+    <section class="closing wrap"><svg><use href="#i-flower"/></svg><p>愿你有认真生活的勇气，<br>也有随时快乐的底气。</p><span>MADE WITH A LITTLE EXTRA LOVE</span></section>
+  </main>
+  <footer class="site-footer wrap"><a class="footer-brand" href="#home">给你的小岛 <span>♡</span></a><span>日子慢慢，喜欢满满。</span><button class="text-button" id="customize">给小岛起个名字 ↗</button></footer>
+  <div id="date-menu" class="date-menu" hidden><div class="date-menu-heading"><strong id="date-menu-title"></strong><span id="date-menu-current"></span></div><div role="menu" aria-labelledby="date-menu-title"><button type="button" role="menuitem" id="date-work"><span class="menu-option-icon"><svg><use href="#i-sun"/></svg></span><span><strong>上班</strong><small>设置 / 修改上下班时间</small></span><span class="menu-chevron">›</span></button><button type="button" role="menuitem" id="date-off"><span class="menu-option-icon"><svg><use href="#i-moon"/></svg></span><span><strong>OFF</strong><small>这一天休息</small></span><svg class="menu-check" id="date-off-check" hidden><use href="#i-check"/></svg></button></div></div>
+  <dialog id="manual-dialog" class="import-dialog" aria-labelledby="manual-title"><div class="dialog-header"><div><p class="eyebrow">MAKE ROOM FOR YOUR DAY</p><h2 id="manual-title">自己安排这一天</h2></div><button class="icon-button close-dialog" aria-label="关闭手动排班">×</button></div><form id="manual-form" class="dialog-body"><p id="manual-person" class="dialog-intro"></p><label class="person-choice">排班日期<input type="date" id="manual-date" required></label><p id="manual-calendar-info" class="form-hint"></p><div id="manual-shifts"></div><button type="button" class="button secondary full-button" id="manual-add">＋ 再加一段班次</button><p class="form-hint">结束时间早于开始时间，会标记为次日。手动调整单独保存，导入的原排班仍可在“导入记录”中查看。</p><p id="manual-error" class="import-error" role="alert" hidden></p><button type="submit" class="button primary full-button">保存这一天的排班</button></form></dialog>
+  <dialog id="history-dialog" class="import-dialog" aria-labelledby="history-title"><div class="dialog-header"><div><p class="eyebrow">YOUR ORIGINAL PLANS</p><h2 id="history-title">导入记录</h2></div><button class="icon-button close-dialog" aria-label="关闭导入记录">×</button></div><div class="dialog-body"><p class="dialog-intro">这里保留每次导入的个人原排班，之后的手动调整不会改变这些记录。</p><div id="history-content"></div></div></dialog>
+  <dialog id="import-dialog" class="import-dialog" aria-labelledby="import-title"><div class="dialog-header"><div><p class="eyebrow">BRING YOUR DAYS HERE</p><h2 id="import-title">把排班带到小岛</h2></div><button class="icon-button close-dialog" aria-label="关闭导入">×</button></div><div class="dialog-body">
+    <p class="dialog-intro">横向排班表、逐条记录表都可以。选好文件，再选自己。</p>
+    <label class="dropzone" id="dropzone" for="excel-file"><svg><use href="#i-upload"/></svg><strong id="file-label">点击选择，或把 Excel 拖到这里</strong><span>支持 .xlsx / .xls · 最大 10 MB</span><input type="file" id="excel-file" accept=".xlsx,.xls"></label>
+    <div id="import-config" hidden>
+      <div class="form-grid"><label>工作表<select id="import-sheet"></select></label><label>排班年月<input id="import-month" type="month" required></label><label>表格格式<select id="import-format"><option value="">自动识别</option><option value="matrix">横向排班表</option><option value="list">逐条记录表</option></select></label><label>表头所在行<input id="import-header" type="number" min="1" max="10000" step="1" value="1"></label></div>
+      <p class="form-hint">日期只有日号时，会按所选年月补全；请核对排班年月。</p>
+      <details class="column-details"><summary>识别不对？手动调整对应列</summary><div class="form-grid" id="column-fields"></div></details>
+      <div id="parsed-info" class="parsed-info"></div>
+      <div id="person-config" hidden><label class="person-choice">这是我的排班<select id="import-person"></select></label><details class="rule-details" id="rule-details"><summary>班次时间、岗位和地点 <span id="rule-hint"></span></summary><p class="form-hint">表内已有的信息优先。只填“早班”等名称时，请在这里补充时间。</p><div id="shift-rules"></div></details><div class="import-warnings" id="import-warnings"></div><button class="button primary full-button" id="preview-import">预览我的排班 <svg><use href="#i-arrow"/></svg></button></div>
+    </div>
+    <p class="import-error" id="import-error" role="alert" hidden></p>
+    <div id="import-preview" hidden><div class="preview-heading"><strong id="preview-person"></strong><span id="preview-summary"></span></div><p class="form-hint">每次导入的原排班都会留存。手动调整优先保留；未导入的日期和空白格不会删除旧排班。</p><div class="preview-scroll"><table><thead><tr><th>日期</th><th>班次</th><th>时间</th><th>岗位 / 地点</th></tr></thead><tbody id="preview-body"></tbody></table></div><label class="confirm-check"><input id="confirm-check" type="checkbox"> 我已核对姓名、年月、时间及跳过行的提示</label><button class="button primary full-button" id="confirm-import" disabled>确认并收好排班</button></div>
+    <p class="dialog-local">文件在浏览器内解析，仅保存所选人员的排班。</p>
+  </div></dialog>
+  <dialog id="name-dialog" class="name-dialog" aria-labelledby="name-title"><div class="dialog-header"><h2 id="name-title">小岛想怎么称呼你？</h2><button class="icon-button close-dialog" aria-label="关闭昵称设置">×</button></div><form id="name-form"><label>你的昵称<input id="nickname" maxlength="16" placeholder="例如：小可爱" autocomplete="off"></label><p class="form-hint">留空就用“你的小岛”。只保存在当前浏览器。</p><button class="button primary full-button" type="submit">就叫这个名字</button></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
+
+
+
